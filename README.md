@@ -104,6 +104,17 @@ npx skills add Tokisaki-Galaxy/lingguang-mcp -g -a opencode -y
 
 其他 AI 工具把 `-a opencode` 换成对应的名字即可，比如 `-a claude-code`。
 
+**备选：用 GitHub CLI 安装**
+
+已经装了 `gh` 的话，也可以这样装：
+
+```bash
+gh skill install Tokisaki-Galaxy/lingguang-mcp --agent opencode --scope user
+```
+
+效果一样，装到同一位置。但注意 `gh skill` 目前还是 preview 功能，
+命令和行为可能变动。两者选一个就行，不要重复装。
+
 **为什么要装 skill？** 工具本身只是命令，AI 不会自己知道什么时候该用、该怎么用。
 skill 补上这层判断。不装也能用，但你得自己记住每条命令。
 
@@ -218,6 +229,36 @@ lingguang doctor
 [通过] 解析器能提取正文（891 字符）
 ```
 
+## 检查版本与更新
+
+```bash
+lingguang version
+```
+
+这是唯一会访问 PyPI 的命令，用来检查有没有新版本：
+
+```
+lingguang 0.3.0
+最新版本 0.4.0，有新版本可升
+
+  升级：uv tool upgrade lingguang
+  改了什么：https://github.com/Tokisaki-Galaxy/lingguang-mcp/compare/v0.3.0...v0.4.0
+
+Python 3.11.11
+凭据存储 windows-credential-manager
+凭据状态 有效，上次成功 2 小时前
+```
+
+只想要版本号、不联网：
+
+```bash
+lingguang --version      # 输出 0.3.0
+lingguang version --offline
+```
+
+**除了查灵光数据，这是唯一会访问外部服务的命令。**
+其他命令只会连灵光接口，不会连别的任何地方。
+
 ## CLI 用法
 
 ```bash
@@ -252,6 +293,7 @@ lingguang export <session-id> --format md -o out.md
 | `lingguang answer <query-id> [--wait N]` | 取回提问结果 |
 | `lingguang export <id> --format md\|json\|jsonl\|raw` | 导出会话 |
 | `lingguang doctor` | 环境自检 |
+| `lingguang version` | 检查版本更新（访问 PyPI） |
 | `lingguang serve` | 启动 MCP server |
 
 所有查询命令都支持 `--json`，方便管道处理。

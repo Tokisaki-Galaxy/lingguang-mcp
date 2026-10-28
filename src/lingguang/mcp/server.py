@@ -21,6 +21,7 @@ sys.stdout = sys.stderr
 import asyncio  # noqa: E402
 import json  # noqa: E402
 
+from .. import __version__  # noqa: E402
 from ..core.errors import LingguangError  # noqa: E402
 from ..core.service import Service  # noqa: E402
 from .tools import TOOL_DEFINITIONS, dispatch  # noqa: E402
@@ -48,7 +49,7 @@ def _handle_initialize(req_id: Any, params: dict[str, Any]) -> None:
         {
             "protocolVersion": PROTOCOL_VERSION,
             "capabilities": {"tools": {"listChanged": False}},
-            "serverInfo": {"name": "lingguang-mcp", "version": "0.1.0"},
+            "serverInfo": {"name": "lingguang-mcp", "version": __version__},
         },
     )
 

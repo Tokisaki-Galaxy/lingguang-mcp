@@ -374,6 +374,79 @@ def serve() -> None:
     run()
 
 
+@app.command("version")
+def version(
+    offline: Annotated[
+        bool, typer.Option("--offline", help="跳过 PyPI 查询，只显示本地信息")
+    ] = False,
+) -> None:
+    """显示版本、安装方式、更新状态和凭据健康度。
+
+    这是除灵光接口外，唯一会访问外部服务的命令。它会查 PyPI 看有没有新版本。
+    """
+    from .. import __version__
+    from ..core import storage, update
+
+    typer.echo(f"lingguang {__version__}")
+
+    if update.is_dev_version(__version__):
+        typer.echo("本地开发版，跳过更新检查")
+    elif offline:
+        typer.echo("已跳过更新检查")
+    else:
+        info = update.check_pypi()
+        if info.error:
+            typer.echo(info.error, err=True)
+        elif info.has_update:
+            typer.echo(f"最新版本 {info.latest}，有新版本可升")
+            typer.echo()
+            typer.echo(f"  升级：{update.install_method()}")
+            url = info.report_url
+            if url:
+                typer.echo(f"  改了什么：{url}")
+        elif update.is_newer(__version__, info.latest or "0"):
+            # 本地比 PyPI 新：开发版或还没发布的改动
+            typer.echo(f"PyPI 最新 {info.latest}，本地版本更新（未发布）")
+        else:
+            typer.echo(f"最新版本 {info.latest}，已是最新")
+
+    typer.echo()
+    typer.echo(f"Python {sys.version.split()[0]}")
+    typer.echo(f"凭据存储 {storage.backend_name()}")
+
+    status = describe_status()
+    if not status.get("imported"):
+        typer.echo("凭据状态 未导入")
+        return
+
+    try:
+        svc = Service()
+        probed = svc.auth_status()
+    except LingguangError as exc:
+        typer.echo(f"凭据状态 无法探测（{exc}）")
+        return
+
+    if probed.get("valid"):
+        hours = probed.get("last_ok_hours")
+        hint = f"，上次成功 {hours} 小时前" if isinstance(hours, int) and hours >= 0 else ""
+        typer.echo(f"凭据状态 有效{hint}")
+    else:
+        typer.echo(f"凭据状态 失效，{probed.get('probe', '需要重新导入')}")
+
+
+@app.callback(invoke_without_command=True)
+def _root(
+    show_version: Annotated[
+        bool, typer.Option("--version", help="只打印版本号，不联网")
+    ] = False,
+) -> None:
+    if show_version:
+        from .. import __version__
+
+        typer.echo(__version__)
+        raise typer.Exit()
+
+
 def main() -> None:
     app()
 
