@@ -2,9 +2,11 @@
 
 # lingguang-mcp
 
-**把灵光 AI 的账单查询与钉钉消息能力，封装成 MCP 工具和 CLI**
+**把灵光 AI 的支付宝账单查询能力，封装成 MCP 工具和 CLI**
 
 让 AI Agent 替你向灵光提问、取回结论、记录 Agent 的执行轨迹
+
+间接实现查询支付宝账单等能力
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white) ![MCP](https://img.shields.io/badge/MCP-2026--07--28-6E56CF?style=flat-square) ![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)
 
