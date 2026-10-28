@@ -58,3 +58,30 @@ jobs:
           path: dist/
       - name: 上传到 PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  release:
+    name: 创建 GitHub Release
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 生成 Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --notes "**PyPI**: https://pypi.org/project/lingguang/${VERSION}/
+
+          **安装或升级**:
+
+          \`\`\`bash
+          uv tool install lingguang
+          uv tool upgrade lingguang
+          \`\`\`"
