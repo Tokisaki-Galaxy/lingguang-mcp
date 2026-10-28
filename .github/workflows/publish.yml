@@ -26,6 +26,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+      - name: 校验 tag 格式
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::tag 必须形如 v1.2.3，当前是 ${GITHUB_REF_NAME}"
+            exit 1
+          fi
+          echo "版本号由 tag 决定：${VERSION}"
       - run: uv build
       - uses: actions/upload-artifact@v4
         with:

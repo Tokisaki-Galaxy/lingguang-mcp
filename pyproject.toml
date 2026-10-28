@@ -1,6 +1,6 @@
 [project]
 name = "lingguang"
-version = "0.1.0"
+dynamic = ["version"]
 description = "把灵光 AI 的支付宝账单查询等功能封装成 MCP 工具和 CLI"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -49,8 +49,14 @@ Changelog = "https://github.com/Tokisaki-Galaxy/lingguang-mcp/releases"
 lingguang = "lingguang.cli.main:app"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/lingguang/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/lingguang"]

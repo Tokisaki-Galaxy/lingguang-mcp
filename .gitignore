@@ -8,6 +8,8 @@ credentials.json
 __pycache__/
 *.py[cod]
 *.egg-info/
+# 构建产物
+src/lingguang/_version.py
 dist/
 build/
 .venv/
