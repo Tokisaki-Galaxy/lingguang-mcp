@@ -15,16 +15,14 @@ from __future__ import annotations
 import json
 import os
 import re
-import stat
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
 from .errors import AuthError
+from . import storage
 
-CONFIG_DIR = Path.home() / ".config" / "lingguang"
-CREDENTIALS_FILE = CONFIG_DIR / "credentials.json"
 PENDING_FILE = Path.home() / ".cache" / "lingguang" / "pending.jsonl"
 FAILED_DIR = Path.home() / ".cache" / "lingguang" / "failed"
 
@@ -39,7 +37,6 @@ class Credentials:
     last_ok_at: float = 0.0
     last_error: str = ""
     last_error_at: float = 0.0
-    encrypted: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -79,34 +76,17 @@ def check_cookie_completeness(cookie: str) -> list[str]:
     return [name for name in KEY_COOKIES if name not in present]
 
 
-def _ensure_dir(path: Path) -> None:
-    path.mkdir(parents=True, exist_ok=True)
+def save_credentials(creds: Credentials) -> str:
+    """保存凭据，返回后端名称。
 
-
-def _restrict_permissions(path: Path) -> None:
-    """尽力把文件权限收到 0600。Windows 上 chmod 语义有限，失败不阻断。"""
-    try:
-        os.chmod(path, stat.S_IRUSR | stat.S_IWUSR)
-    except (OSError, NotImplementedError):
-        pass
-
-
-def save_credentials(creds: Credentials) -> Path:
-    _ensure_dir(CONFIG_DIR)
-    CREDENTIALS_FILE.write_text(
-        json.dumps(creds.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    _restrict_permissions(CREDENTIALS_FILE)
-    return CREDENTIALS_FILE
+    Windows 写系统凭据管理器，其他平台写文件。
+    """
+    storage.save(creds.to_dict())
+    return storage.backend_name()
 
 
 def load_credentials() -> Credentials | None:
-    if not CREDENTIALS_FILE.exists():
-        return None
-    try:
-        data = json.loads(CREDENTIALS_FILE.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return None
+    data = storage.load()
     if not isinstance(data, dict) or not data.get("cookie"):
         return None
     return Credentials(
@@ -115,7 +95,6 @@ def load_credentials() -> Credentials | None:
         last_ok_at=float(data.get("last_ok_at") or 0),
         last_error=str(data.get("last_error") or ""),
         last_error_at=float(data.get("last_error_at") or 0),
-        encrypted=bool(data.get("encrypted")),
     )
 
 
@@ -184,7 +163,7 @@ def describe_status() -> dict[str, Any]:
     return {
         "valid": bool(creds.last_ok_at) and not creds.last_error,
         "imported": True,
-        "source": "file",
+        "source": storage.backend_name(),
         "imported_days": days,
         "last_ok_hours": hours_since_ok,
         "last_error": creds.last_error,
@@ -194,5 +173,5 @@ def describe_status() -> dict[str, Any]:
 
 
 def clear_credentials() -> None:
-    if CREDENTIALS_FILE.exists():
-        CREDENTIALS_FILE.unlink()
+    """清除凭据。"""
+    storage.clear()

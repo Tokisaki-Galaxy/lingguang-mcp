@@ -181,9 +181,16 @@ lingguang auth import cookie.txt
 导入后会立刻验证一次。成功会显示：
 
 ```
-已保存到 ~/.config/lingguang/credentials.json
+已保存到Windows 凭据管理器
 验证通过，cookie 可用
 ```
+
+**cookie 存在哪里：**
+
+- **Windows**：系统凭据管理器，标识 `lingguang-mcp`，
+  可在「控制面板 → 凭据管理器 → Windows 凭据」里查看和删除。
+  不存在用户目录里，同步盘扫不到。
+- **Linux / macOS**：`~/.config/lingguang/credentials.json`，权限 0600。
 
 失败会直接报错，不会等到下次用的时候才炸。
 
@@ -357,15 +364,15 @@ src/lingguang/
 **cookie 等于你的登录态。**
 
 `ctoken` 泄露等于别人能以你的身份访问灵光，看到你的账单。
-不要把 `cookie.txt` 或 `credentials.json` 分享给任何人，不要提交到仓库。
-`.gitignore` 已经排除了这两类文件。
+不要把 `cookie.txt` 分享给任何人，不要提交到仓库。
+Windows 上 cookie 存在系统凭据管理器，不在用户目录，同步盘扫不到。
+Linux / macOS 存在 `credentials.json`，`.gitignore` 已排除。
 
 cookie 会在长时间不操作后失效。失效时重新导入即可，`lingguang auth status` 会告诉你上次成功是多久之前。
 
 **数据保存在哪里。**
 
-除了 `~/.config/lingguang/credentials.json` 存 cookie，
-本工具不保存任何历史数据。默认不落库，每次调用都实时拉取。
+除了 cookie，本工具不保存任何历史数据。默认不落库，每次调用都实时拉取。
 需要归档时用 `lingguang export` 导出到你自己选的位置。
 
 **关于 APASS 高危确认。**

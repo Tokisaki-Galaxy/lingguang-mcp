@@ -83,8 +83,13 @@ def auth_import(
         _fail(str(exc))
 
     creds = Credentials(cookie=cookie, imported_at=__import__("time").time())
-    path = save_credentials(creds)
-    typer.echo(f"已保存到 {path}")
+    backend = save_credentials(creds)
+    where = (
+        "Windows 凭据管理器"
+        if backend == "windows-credential-manager"
+        else "配置文件"
+    )
+    typer.echo(f"已保存到{where}")
 
     try:
         svc = Service(cookie=cookie)

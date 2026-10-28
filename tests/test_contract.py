@@ -25,9 +25,9 @@ E2E_PREFIX = "[e2e-test]"
 def _has_credentials() -> bool:
     if os.environ.get("LG_COOKIE"):
         return True
-    from lingguang.core.auth import CREDENTIALS_FILE
+    from lingguang.core import storage
 
-    return CREDENTIALS_FILE.exists()
+    return storage.load() is not None
 
 
 requires_live = pytest.mark.skipif(
