@@ -1,0 +1,1 @@
+{"content": "[{\"method\": \"turn/start\", \"params\": {}}, {\"method\": \"item/futureThing/start\", \"params\": {\"x\": 1}}, {\"method\": \"item/tool/start\", \"params\": {\"itemId\": \"t1\", \"display\": {\"title\": \"\\u793a\\u4f8b\\u5de5\\u5177\"}}}, {\"method\": \"turn/finish\", \"params\": {}}]"}

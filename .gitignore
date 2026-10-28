@@ -1,0 +1,30 @@
+# 凭据与本地状态，绝不入库
+cookie.txt
+*.cookie
+credentials.json
+.pending.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# 工具
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 测试与调试产物
+.playwright-mcp/
+*.local.json
+failed/

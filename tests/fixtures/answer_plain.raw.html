@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-artifact-code-theme="light" data-trace-id="21b82f5717931735500984653e37f7">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="
+  script-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: *.alipay.com *.alipayobjects.com *.amap.com *.lingguang.com *.lingguangcontent.com *.lingguangobjects.com;
+  frame-src 'self' data: blob: *.alipay.com *.alipayobjects.com *.amap.com *.lingguang.com *.lingguangcontent.com *.lingguangobjects.com;
+  connect-src 'self' data: blob: *.alipay.com *.alipayobjects.com *.amap.com *.lingguang.com *.lingguangcontent.com *.lingguangobjects.com;
+  child-src 'self' data: blob: *.alipay.com *.alipayobjects.com *.amap.com *.lingguang.com *.lingguangcontent.com *.lingguangobjects.com;
+  object-src 'self' data: blob: *.alipay.com *.alipayobjects.com *.amap.com *.lingguang.com *.lingguangcontent.com *.lingguangobjects.com;
+  base-uri 'self' *.alipay.com *.alipayobjects.com *.amap.com *.lingguang.com *.lingguangcontent.com *.lingguangobjects.com;
+  form-action 'none';
+  upgrade-insecure-requests;
+"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no">
+<script>
+  (function () {
+    var BOOTSTRAP_VERSION = 1;
+    var BOOTSTRAP_MARKER = "__agentEventRendererBootstrap";
+    var BOOTSTRAP_QUEUE = "__agentEventRendererPendingEvents";
+    var current = window.AgentEventRenderer;
+
+    // morphdom 可能再次处理这段脚本。已有 bootstrap 时必须保留原队列。
+    if (
+      current &&
+      current[BOOTSTRAP_MARKER] === BOOTSTRAP_VERSION &&
+      Array.isArray(current[BOOTSTRAP_QUEUE]) &&
+      typeof current.render === "function"
+    ) {
+      return;
+    }
+
+    // 正式 runtime 已经接管时，不能再用 bootstrap 覆盖它。
+    if (current && typeof current.render === "function") {
+      return;
+    }
+
+    var pendingEvents = [];
+    var bootstrap = {
+      render: function (payload) {
+        pendingEvents.push(payload);
+      }
+    };
+
+    bootstrap[BOOTSTRAP_MARKER] = BOOTSTRAP_VERSION;
+    bootstrap[BOOTSTRAP_QUEUE] = pendingEvents;
+    window.AgentEventRenderer = bootstrap;
+  })();
+</script>
+
+<!-- 工具链脚本 -->
+<script src="https://render.lingguangobjects.com/p/yuyan/200031800021115004/agent-event-renderer.js"></script>
+
+<!-- Tailwind CSS -->
+<script src="https://gw.alipayobjects.com/render/p/yuyan/180023180000534978/tailwind3.4.14.js"></script>
+
+
+<script src="https://mdn.alipayobjects.com/asap_serivce/uri/file/as/claw_cot.1019.660990"></script>
+<link rel="stylesheet" href="https://mdn.alipayobjects.com/asap_serivce/uri/file/as/claw_cot.1019.660990.css">
+
+<style>
+:root,
+html,
+html[data-prefers-theme="dark"] {
+    --ref-label-image-url: url('https://mdn.alipayobjects.com/huamei_0lclsl/afts/img/OoxvRp7q7kYAAAAAPzAAAAgADqp2AQFr/original');
+}
+html[data-prefers-theme="light"] {
+    --ref-label-image-url: url('https://mdn.alipayobjects.com/huamei_0lclsl/afts/img/gQIQSJP0Rp4AAAAAQCAAAAgADqp2AQFr/original');
+}
+#special-body-content-container .ref_label {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    vertical-align: middle;
+    background-image: var(--ref-label-image-url);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+}
+#special-body-content-container .file-preview-card-container[data-file-preview-collapsible="true"][data-file-preview-expanded="false"] .file-preview-card:nth-of-type(n+4) {
+    display: none !important;
+}
+#special-body-content-container .file-preview-card-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding: 8px 12px 10px;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.45);
+    background: transparent;
+    font: inherit;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+}
+#special-body-content-container .file-preview-card-toggle::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    margin-left: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+}
+#special-body-content-container .file-preview-card-container[data-file-preview-expanded="true"] .file-preview-card-toggle::after {
+    transform: rotate(225deg) translateY(-2px);
+}
+html[data-prefers-theme="dark"] #special-body-content-container .file-preview-card-toggle,
+html[data-artifact-code-theme="dark"] #special-body-content-container .file-preview-card-toggle {
+    border-top-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.55);
+}
+</style>
+
+<!-- Jinja2 扩展样式插槽 -->
+<style>
+
+</style>
+
+<script>
+    if (window.ClawCandyJarCompat) {
+        window.ClawCandyJarCompat.syncStreamContext("streaming");
+    } else {
+        window.stream_status = "streaming";
+    }
+    window.trace_id = "21b82f5717931735500984653e37f7";
+    
+</script>
+</head>
+<body>
+<div id="special-body-content-container">
+<div id="render-root" persistent-node="true"></div>
+<script>AgentEventRenderer.render({"method":"turn/start","params":{"sessionId":"00000000-0000-0000-0000-000000000000","turnId":"00000000-0000-0000-0000-000000000000","responseId":"00000000-0000-0000-0000-000000000000"},"timestamp":0});</script><script>AgentEventRenderer.render({"method":"turn/finalResponse/start","params":{"sessionId":"00000000-0000-0000-0000-000000000000","turnId":"00000000-0000-0000-0000-000000000000","format":"html"},"timestamp":0});</script><script>AgentEventRenderer.render({"method":"turn/finalResponse/delta","params":{"sessionId":"00000000-0000-0000-0000-000000000000","turnId":"00000000-0000-0000-0000-000000000000","delta":"\u003cp\u003e收到"},"timestamp":0});</script><script>AgentEventRenderer.render({"method":"turn/finalResponse/delta","params":{"sessionId":"00000000-0000-0000-0000-000000000000","turnId":"00000000-0000-0000-0000-000000000000","delta":"。"},"timestamp":0});</script><script>AgentEventRenderer.render({"method":"turn/finalResponse/delta","params":{"sessionId":"00000000-0000-0000-0000-000000000000","turnId":"00000000-0000-0000-0000-000000000000","delta":"\u003c/p\u003e"},"timestamp":0});</script><script>AgentEventRenderer.render({"method":"turn/finalResponse/finish","params":{"sessionId":"00000000-0000-0000-0000-000000000000","turnId":"00000000-0000-0000-0000-000000000000","status":"success"},"timestamp":0});</script><script>AgentEventRenderer.render({"method":"turn/finish","params":{"sessionId":"00000000-0000-0000-0000-000000000000","turnId":"00000000-0000-0000-0000-000000000000","status":"success","responseId":"00000000-0000-0000-0000-000000000000"},"timestamp":0});</script>
+</div>
+<div id="html-content-loaded-marker" style="display:none;"></div>
+</body>
+</html>
