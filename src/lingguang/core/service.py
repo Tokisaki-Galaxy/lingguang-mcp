@@ -162,14 +162,32 @@ class Service:
         return [item for item in (data.get("dataList") or []) if isinstance(item, dict)]
 
     def delete_session(self, session_id: str, confirm: bool = False) -> dict[str, Any]:
+        """删除会话。
+
+        实测坑：sceneCode 必须与会话来源场景一致，传错时接口返回 SUCCESS
+        但静默不删。所以这里先查场景，删完再复核，确认真的没了。
+        """
         if not confirm:
             raise ContractError(
                 "删除是不可恢复的破坏性操作，必须显式传 confirm=True"
             )
         if not session_id:
             raise ContractError("session_id 不能为空")
-        self.client.delete_session(session_id)
+
+        scene = self.client.find_session_scene(session_id)
+        if scene is None:
+            # 会话已不存在。接口幂等，直接返回成功。
+            _remove_pending_by_session(session_id)
+            return {"deleted": True, "session_id": session_id, "note": "会话本来就不存在"}
+
+        self.client.delete_session(session_id, scene=scene)
         _remove_pending_by_session(session_id)
+
+        if self.client.session_exists(session_id):
+            raise ContractError(
+                f"删除未生效，会话仍存在（sceneCode={scene}）。"
+                "上游可能改了删除语义，请检查"
+            )
         return {"deleted": True, "session_id": session_id}
 
     # ---------- 提问 ----------
@@ -203,8 +221,9 @@ class Service:
             # 这是"已发出但结果未知"，不是错误，交给 get_answer 去确认。
             return AskResult(sid, qid, status="dispatched_unknown")
 
-        status = "submitted" if drained else "dispatched_unknown"
-        return AskResult(sid, qid, status=status)
+        # 正常读完流即为已受理。空流说明服务端受理了但没有推送任何事件，
+        # 仍然算已受理，结果要靠 get_answer 取。
+        return AskResult(sid, qid, status="submitted" if drained else "accepted")
 
     def get_answer(
         self,

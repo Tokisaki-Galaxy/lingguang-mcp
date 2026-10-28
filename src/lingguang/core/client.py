@@ -126,15 +126,32 @@ class HttpClient:
             },
         )
 
-    def delete_session(self, session_id: str) -> dict[str, Any]:
+    def delete_session(self, session_id: str, scene: str = SCENE_HISTORY) -> dict[str, Any]:
+        """删除会话。
+
+        实测重要约束：sceneCode 必须与会话自身的来源场景一致，
+        否则接口返回 SUCCESS 但静默什么都不删。
+        LEOPARD 会话要传 LEOPARD，WEB 会话要传 WEB。
+        """
         return self._post_json(
             "/chat/deleteChatSession.json",
             {
                 "sessionId": session_id,
-                "sceneCode": SCENE_HISTORY,
+                "sceneCode": scene,
                 "ctoken": self.ctoken,
             },
         )
+
+    def find_session_scene(self, session_id: str) -> str | None:
+        """查会话的来源场景，删不掉时用来排查。"""
+        data = self.list_sessions(page_size=MAX_PAGE_SIZE)
+        for item in data.get("dataList") or []:
+            if item.get("sessionId") == session_id:
+                return str(item.get("sceneCode") or SCENE_HISTORY)
+        return None
+
+    def session_exists(self, session_id: str) -> bool:
+        return self.find_session_scene(session_id) is not None
 
     def login_check(self) -> dict[str, Any]:
         return self._post_json("/user/loginCheck.json", {"ctoken": self.ctoken})

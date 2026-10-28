@@ -1,0 +1,51 @@
+name: publish
+
+# 推一个形如 v0.1.0 的 tag 就自动发布到 PyPI。
+# 用 Trusted Publishing，不需要任何 API token。
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: 跑测试
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --extra dev
+      - run: uv run pytest -q
+
+  build:
+    name: 构建分发包
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: 发布到 PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/lingguang
+    permissions:
+      # Trusted Publishing 必需
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: 上传到 PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

@@ -157,14 +157,26 @@ def mark_error(message: str) -> None:
 
 def describe_status() -> dict[str, Any]:
     """给 auth_status 用。返回人话，不返回裸时间戳。"""
+    env_cookie = os.environ.get("LG_COOKIE", "").strip()
     creds = load_credentials()
-    if creds is None:
+
+    if creds is None and not env_cookie:
         return {
             "valid": False,
             "imported": False,
             "hint": "还没有导入 cookie，运行 `lingguang auth import <文件>`",
         }
 
+    if creds is None and env_cookie:
+        return {
+            "valid": False,
+            "imported": True,
+            "source": "env:LG_COOKIE",
+            "missing_keys": check_cookie_completeness(env_cookie),
+            "hint": "cookie 来自环境变量 LG_COOKIE，尚未验证",
+        }
+
+    assert creds is not None
     now = time.time()
     days = int((now - creds.imported_at) / 86400) if creds.imported_at else 0
     hours_since_ok = int((now - creds.last_ok_at) / 3600) if creds.last_ok_at else -1
@@ -172,6 +184,7 @@ def describe_status() -> dict[str, Any]:
     return {
         "valid": bool(creds.last_ok_at) and not creds.last_error,
         "imported": True,
+        "source": "file",
         "imported_days": days,
         "last_ok_hours": hours_since_ok,
         "last_error": creds.last_error,
