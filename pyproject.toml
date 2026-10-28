@@ -37,10 +37,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/tokisaki-galaxy/lingguang-mcp"
-Repository = "https://github.com/tokisaki-galaxy/lingguang-mcp"
-Issues = "https://github.com/tokisaki-galaxy/lingguang-mcp/issues"
-Documentation = "https://github.com/tokisaki-galaxy/lingguang-mcp#readme"
+Homepage = "https://github.com/Tokisaki-Galaxy/lingguang-mcp"
+Repository = "https://github.com/Tokisaki-Galaxy/lingguang-mcp"
+Issues = "https://github.com/Tokisaki-Galaxy/lingguang-mcp/issues"
+Documentation = "https://github.com/Tokisaki-Galaxy/lingguang-mcp#readme"
+Changelog = "https://github.com/Tokisaki-Galaxy/lingguang-mcp/releases"
 
 [project.scripts]
 lingguang = "lingguang.cli.main:app"

@@ -8,18 +8,20 @@
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white) ![MCP](https://img.shields.io/badge/MCP-2026--07--28-6E56CF?style=flat-square) ![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)
 
-![CLI](https://img.shields.io/badge/interface-CLI%20%2B%20MCP-FF6B35?style=flat-square) ![Transport](https://img.shields.io/badge/transport-stdio-2E8B57?style=flat-square) ![Tests](https://img.shields.io/badge/tests-54%20passed-4CAF50?style=flat-square)
+![PyPI](https://img.shields.io/badge/PyPI-lingguang-3775A9?style=flat-square&logo=pypi&logoColor=white) ![CLI](https://img.shields.io/badge/interface-CLI%20%2B%20MCP-FF6B35?style=flat-square) ![Transport](https://img.shields.io/badge/transport-stdio-2E8B57?style=flat-square) ![Tests](https://img.shields.io/badge/tests-54%20passed-4CAF50?style=flat-square)
 
 </div>
 
 > 本项目基于对 `lingguang.com` 网页接口的逆向分析，非官方 SDK。
 > 接口随时可能变动，使用前请阅读 [风险与边界](#风险与边界)。
 
-**不想自己折腾配置？** 复制以下内容发给AGENT工具。
+**不想自己折腾配置？** 复制以下内容发给 AGENT 工具。
+
 ```
-请帮我配置 lingguang-mcp，这是一个让我能通过你查询支付宝账单和钉钉消息的工具。
-仓库地址：https://github.com/tokisaki-galaxy/lingguang-mcp
-详细说明见随附的 USAGE.md。请按里面的步骤帮我装好并挂载到 MCP。
+请帮我配置 lingguang，这是一个让我能通过你查询支付宝账单和钉钉消息的工具。
+它已发布到 PyPI，可以直接 `uv tool install lingguang` 安装。
+仓库地址：https://github.com/Tokisaki-Galaxy/lingguang-mcp
+详细说明见随附的 USAGE.md，请按里面的步骤帮我装好并挂载到 MCP。
 ```
 
 > 如果你是一个LLM,请阅读与当前文件同级的USAGE.MD文件帮助用户快速配置
@@ -81,23 +83,19 @@ src/lingguang/
 
 ## 安装
 
-两种方式，按需选一个。
-
-### 日常使用（推荐）
-
-不用 clone，一条命令装好，之后任何目录都能直接用：
+### 从 PyPI 安装（推荐）
 
 ```bash
-uv tool install git+https://github.com/tokisaki-galaxy/lingguang-mcp.git
+uv tool install lingguang
 ```
 
-升级就是重跑这条命令。卸载：
+装完 `lingguang` 命令在任何目录都可用。升级重跑这条命令，卸载：
 
 ```bash
-uv tool uninstall lingguang-mcp
+uv tool uninstall lingguang
 ```
 
-没有 `uv` 的话，先装：
+没有 `uv` 的话先装（Python 的现代包管理器，比 pip 快得多）：
 
 ```bash
 # Windows PowerShell
@@ -107,16 +105,36 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### 要改代码
+用 pip 也能装，但需要自己管虚拟环境：
 
 ```bash
-git clone https://github.com/tokisaki-galaxy/lingguang-mcp
+pip install lingguang
+```
+
+### 从 Git 安装（追最新代码）
+
+想在正式发版前拿到未发布的改动，或者想锁定某个 commit：
+
+```bash
+uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git
+```
+
+指定分支或版本：
+
+```bash
+uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git@master
+uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git@v0.1.0
+```
+
+### 参与开发
+
+```bash
+git clone https://github.com/Tokisaki-Galaxy/lingguang-mcp
 cd lingguang-mcp
 uv sync --extra dev
 ```
 
-在项目目录里用 `uv run lingguang <命令>` 跑，
-或者激活虚拟环境后直接用 `lingguang`。
+在项目目录里用 `uv run lingguang <命令>` 跑，或者激活虚拟环境后直接用 `lingguang`。
 
 ---
 

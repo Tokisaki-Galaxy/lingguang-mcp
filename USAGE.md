@@ -5,9 +5,10 @@
 复制下面这段发给你所使用的AGENT工具。
 
 ```
-请帮我配置 lingguang-mcp，这是一个让我能通过你查询支付宝账单和钉钉消息的工具。
-仓库地址：https://github.com/tokisaki-galaxy/lingguang-mcp
-详细说明见随附的 USAGE.md。请按里面的步骤帮我装好并挂载到 MCP。
+请帮我配置 lingguang，这是一个让我能通过你查询支付宝账单和钉钉消息的工具。
+它已发布到 PyPI，可以直接 `uv tool install lingguang` 安装。
+仓库地址：https://github.com/Tokisaki-Galaxy/lingguang-mcp
+详细说明见随附的 USAGE.md，请按里面的步骤帮我装好并挂载到 MCP。
 ```
 
 ---
@@ -39,18 +40,24 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**然后安装本工具**。用户只是要用的话，一条命令就够，不需要 clone：
+**然后安装本工具**。已经发布到 PyPI，一条命令就够，不需要 clone：
 
 ```bash
-uv tool install git+https://github.com/tokisaki-galaxy/lingguang-mcp.git
+uv tool install lingguang
 ```
 
 装完后 `lingguang` 命令在任何目录都可用。
 
-如果用户想改代码、参与开发，改成 clone 方式：
+用户想追最新未发布代码的话，从 git 装：
 
 ```bash
-git clone https://github.com/tokisaki-galaxy/lingguang-mcp
+uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git
+```
+
+如果用户想改代码、参与开发，用 clone 方式：
+
+```bash
+git clone https://github.com/Tokisaki-Galaxy/lingguang-mcp
 cd lingguang-mcp
 uv sync --extra dev
 ```
