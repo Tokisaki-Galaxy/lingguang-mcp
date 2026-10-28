@@ -1,7 +1,7 @@
 [project]
 name = "lingguang"
 version = "0.1.0"
-description = "把灵光 AI 的支付宝账单查询与钉钉消息能力封装成 MCP 工具和 CLI"
+description = "把灵光 AI 的支付宝账单查询等功能封装成 MCP 工具和 CLI"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"

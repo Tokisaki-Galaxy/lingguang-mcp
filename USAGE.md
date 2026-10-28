@@ -5,13 +5,13 @@
 复制下面这段发给你所使用的AGENT工具。
 
 ```
-请帮我配置 lingguang，这是一个让我能通过你查询支付宝账单和钉钉消息的工具。
-它已发布到 PyPI，可以直接 `uv tool install lingguang` 安装。
+请帮我装好 lingguang，这是一个让我能通过你查询支付宝账单和钉钉消息的工具。
+需要两步：
+1. 装工具：uv tool install lingguang
+2. 装 skill：npx skills add Tokisaki-Galaxy/lingguang-mcp -g -a opencode -y
 仓库地址：https://github.com/Tokisaki-Galaxy/lingguang-mcp
-详细说明见随附的 USAGE.md，请按里面的步骤帮我装好并挂载到 MCP。
+详细说明见随附的 USAGE.md。
 ```
-
----
 
 以下内容写给 AI 助手。
 
@@ -20,9 +20,9 @@
 用户想通过你调用灵光 AI 的能力，主要是查支付宝账单和钉钉消息。
 这两个能力对个人没有开放 API，灵光是唯一入口。
 
-你的工作是帮用户把 `lingguang-mcp` 装好、挂到 MCP、然后教会他怎么用。
+你的工作是帮用户把 `lingguang` 装好，然后教会他怎么用。
 
-## 第一步：帮用户安装
+## 第一步：装工具
 
 先检查用户有没有 `uv`：
 
@@ -69,8 +69,6 @@ uv sync --extra dev
 ```bash
 lingguang --help
 ```
-
----
 
 ## 第二步：帮用户获取 cookie
 
@@ -169,8 +167,6 @@ lingguang doctor
 [通过] 解析器能提取正文（891 字符）
 ```
 
----
-
 ## 第四步：告诉用户怎么用
 
 装好之后，用户直接对你说人话就行，比如：
@@ -181,8 +177,6 @@ lingguang doctor
 - "把上次那个账单分析导出来存一份"
 
 你负责翻译成工具调用。
-
----
 
 ## 你调用工具时的规则
 
@@ -235,8 +229,6 @@ delete_session(session_id, confirm=true)
 调用前**先**用 `get_transcript` 确认删的是哪个，
 把 summary 念给用户听，得到明确同意再删。删除不可恢复。
 
----
-
 ## 返回值长什么样
 
 ### get_answer
@@ -276,8 +268,6 @@ delete_session(session_id, confirm=true)
 
 用户问"它是怎么算的"时，把这个给他看。
 
----
-
 ## 注意 warnings
 
 `warnings` 非空说明结果可能不完整：
@@ -291,8 +281,6 @@ delete_session(session_id, confirm=true)
 
 **转述给用户，别吞掉。**
 
----
-
 ## 出错了怎么办
 
 | 错误信息 | 原因 | 怎么做 |
@@ -303,8 +291,6 @@ delete_session(session_id, confirm=true)
 | `删除未生效` | 上游改了删除逻辑 | 告诉用户这是 bug |
 
 **认证类错误别重试**，重试一百次也没用。
-
----
 
 ## 必须提醒用户的三件事
 
@@ -330,8 +316,6 @@ delete_session(session_id, confirm=true)
 除了存 cookie，这个工具不保存任何历史。
 需要归档时用 `lingguang export` 导出到用户指定的位置。
 
----
-
 ## 排查顺序
 
 用户说不好使了，按这个来：
@@ -344,10 +328,3 @@ delete_session(session_id, confirm=true)
 ```
 
 如果列表能出来但内容全空，说明灵光改了数据格式，解析器需要更新。
-
----
-
-## 一句话总结
-
-用户说人话，你调工具。提问分两步走，结果没出来别重发，
-删东西先确认，用太频会封号。

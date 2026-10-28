@@ -18,10 +18,12 @@
 **不想自己折腾配置？** 复制以下内容发给 AGENT 工具。
 
 ```
-请帮我配置 lingguang，这是一个让我能通过你查询支付宝账单和钉钉消息的工具。
-它已发布到 PyPI，可以直接 `uv tool install lingguang` 安装。
+请帮我装好 lingguang，这是一个让我能通过你查询支付宝和钉钉消息的工具。
+需要两步：
+1. 装工具：uv tool install lingguang
+2. 装 skill：npx skills add Tokisaki-Galaxy/lingguang-mcp -g -y
 仓库地址：https://github.com/Tokisaki-Galaxy/lingguang-mcp
-详细说明见随附的 USAGE.md，请按里面的步骤帮我装好并挂载到 MCP。
+详细说明见随附的 USAGE.md。
 ```
 
 > 如果你是一个LLM,请阅读与当前文件同级的USAGE.MD文件帮助用户快速配置
@@ -83,17 +85,15 @@ src/lingguang/
 
 ## 安装
 
-### 从 PyPI 安装（推荐）
+两步：先装工具，再装 skill。两个都要，缺一个用不了。
+
+### 第一步：装工具
 
 ```bash
 uv tool install lingguang
 ```
 
-装完 `lingguang` 命令在任何目录都可用。升级重跑这条命令，卸载：
-
-```bash
-uv tool uninstall lingguang
-```
+装完 `lingguang` 命令在任何目录都可用。升级重跑这条命令，卸载用 `uv tool uninstall lingguang`。
 
 没有 `uv` 的话先装（Python 的现代包管理器，比 pip 快得多）：
 
@@ -111,9 +111,24 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 pip install lingguang
 ```
 
+### 第二步：装 skill
+
+skill 是一份写给 AI 助手看的操作手册，告诉它什么时候该查账单、怎么用这些命令。
+
+```bash
+npx skills add Tokisaki-Galaxy/lingguang-mcp -g -a opencode -y
+```
+
+装到 `~/.agents/skills/lingguang/`。重启 opencode 生效。
+
+其他 AI 工具把 `-a opencode` 换成对应的名字即可，比如 `-a claude-code`。
+
+**为什么要装 skill？** 工具本身只是命令，AI 不会自己知道什么时候该用、该怎么用。
+skill 补上这层判断。不装也能用，但你得自己记住每条命令。
+
 ### 从 Git 安装（追最新代码）
 
-想在正式发版前拿到未发布的改动，或者想锁定某个 commit：
+想在正式发版前拿到未发布的改动：
 
 ```bash
 uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git
@@ -125,6 +140,8 @@ uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git
 uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git@master
 uv tool install git+https://github.com/Tokisaki-Galaxy/lingguang-mcp.git@v0.1.0
 ```
+
+skill 也一样，把仓库地址换成 git URL 即可。
 
 ### 参与开发
 
